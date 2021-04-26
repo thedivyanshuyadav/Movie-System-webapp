@@ -15,4 +15,4 @@ cosine_sim=np.concatenate((cos1, cos2,cos3,cos4,cos5,cos6,cos7,cos8,cos9))
 print(cosine_sim.shape)
 
 
-np.save("MovieRecommenderApp/RecommenderModel/input/cosine_sim.npy",cosine_sim)
+np.save("/app/MovieRecommenderApp/RecommenderModel/input/cosine_sim.npy",cosine_sim)
