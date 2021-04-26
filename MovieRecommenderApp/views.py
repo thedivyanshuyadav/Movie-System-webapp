@@ -11,16 +11,10 @@ import pandas as pd
 from django import db
 
 
-def nextPage(request):
-    global rec
-    rec=Recommender()
-    return render(request,'MovieRecommenderApp/index.html')
-
 def index(request):
     global rec
     rec=Recommender()
     return render(request,'MovieRecommenderApp/index.html')
-     
 
 # Create your views here.
 def movieInput(request):

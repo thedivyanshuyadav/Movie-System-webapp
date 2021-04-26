@@ -3,12 +3,12 @@ import pandas as pd
 import urllib
 from skimage import io
 import os
+from MovieRecommenderApp.mergeCosine import merge
 
 def extractName(companies):
     company_names=[]
     for c in companies:
         company_names.append(c['name'])
-
     return ' , '.join(company_names)
 
 
@@ -16,7 +16,7 @@ def extractName(companies):
 
 class Recommender:
     def __init__(self):
-        
+        merge()
         self.__cosine_sim=np.load('./MovieRecommenderApp/RecommenderModel/input/cosine_sim.npy')
         self.__titles=pd.read_csv('./MovieRecommenderApp/RecommenderModel/input/titles.csv')
         self.__titles.columns=['id','title']
