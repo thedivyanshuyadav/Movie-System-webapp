@@ -1,59 +1,56 @@
-{% extends "base.html" %} {% block content %}
-{% load static %}
+{% extends "base.html" %} {% block content %} {% load static %}
 
-<link rel="icon"href="{% static 'favicon.ico' %}">
+<link rel="icon" href="{% static 'favicon.ico' %}" />
 
 <div class="preload">
-
-<progress class="processbar" value="0" max="100"> </progress>
-
+  <progress class="processbar" value="0" max="100"></progress>
 </div>
-
 
 <div class="whole">
-
-<div class="movieload" style="">
-<progress class="movieprocessbar" value="0" max="100" > </progress>
-</div>
-
-<div class="container" id="container">
-  
-
-  <p id="mainTitle">MOVIE SYSTEM</p>
-
-  <form action="" method="POST" id="movieForm">
-    {% csrf_token %}
-    <div class="input-group" id="inputGroup">
-      <div class="input-group-prepend">
-        <span class="input-group-text" id="inputGroup-sizing-lg"
-          >Enter Movie Name</span
-        >
-      </div>
-      <div class="textAndButton">
-      <input id="movie_name" type="text" class="form-control" />
-
-      <input
-        id="submit_btn"
-        class="btn btn-primary btn-lg"
-        type="submit"
-        value="Submit"
-      />
-    </div>
-    </div>
-  </form>
-  
-</div>
-<div class='mainMovieContainer visuallyhidden'>
-  <div class='mainMovieClass'>
-
+  <div class="movieload" style="">
+    <progress class="movieprocessbar" value="0" max="100"></progress>
   </div>
-</div>
-<div class="card-group">
-  <h1 style="text-align:left;"> Related Movies </h1>
-  <div class="row row-cols-md-5 g-4" id="row_1"></div>
-</div>
+
+  <div class="container" id="container">
+    <p id="mainTitle">MOVIE SYSTEM</p>
+
+    <form action="" method="POST" id="movieForm">
+      {% csrf_token %}
+      <div class="input-group" id="inputGroup">
+        <div class="input-group-prepend">
+          {% comment %} <span class="input-group-text" id="inputGroup-sizing-lg"
+            >Enter Movie Name</span
+          > {% endcomment %}
+        </div>
+        <div class="textAndButton">
+          <div class="control">
+            {% comment %} <a onclick="goBack()" class="home_icon" id="back"><img  src="{% static 'images/back.png' %}" height="30px"></a>
+            <a onclick="goForward()" class="home_icon" id="forw"><img  src="{% static 'images/forw.png' %}" height="30px"></a> {% endcomment %}
+          
+            <a href="" class="home_icon" id="home"><img  src="{% static 'images/home.png' %}" height="30px"></a>
+          </div>
+          <input id="movie_name" type="text" class="form-control" autocomplete="off" placeholder="Enter Movie Name" />
+
+          <input
+            id="submit_btn"
+            class="btn btn-primary btn-lg"
+            type="submit"
+            value="Search"
+          />
+        </div>
+      </div>
+      
+      <div class="allMoviesDiv"></div>
 
 
-
+    </form>
+  </div>
+  <div class="mainMovieContainer visuallyhidden">
+    <div class="mainMovieClass"></div>
+  </div>
+  <div class="card-group">
+    <h1 style="text-align: left">Related Movies</h1>
+    <div class="row row-cols-md-5 g-4" id="row_1"></div>
+  </div>
 </div>
 {% endblock content %}

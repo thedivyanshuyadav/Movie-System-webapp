@@ -137,9 +137,7 @@ body::after {
   }
     
 
-#movie_name{
-    width:45vw;
-}
+
 #submit_btn,#inputGroup-sizing-lg{
     background-color: rgb(210, 0, 0);
     color:white;
@@ -178,13 +176,19 @@ textarea,
     font-family: Montserrat;
 }
 
-
-
-#mainTitle{
-    /* opacity: 0; */
-
-    /* border: #78ff17 solid 4px; */
+.tdclass{
+    font-size:16px;
+    font-weight:300;
+    font-family: Montserrat;
+    height:28px;
 }
+
+.tdclass:hover,.tdclass.hovered{
+    color:white;
+    background-color: rgb(210, 0, 0);
+
+}
+
 .visuallyhidden{
     opacity: 0;
     height: 0;
@@ -350,11 +354,55 @@ textarea,
       margin:0px;
       padding: 0px;
       display: inherit;
+      width:60vw;
   }
 
+  .allMoviesDiv::-webkit-scrollbar{
+      display: none;
+  }
+
+  .allMoviesDiv{
+    margin-left: auto;
+    margin-right: auto;
+    width: 60vw;
+    overflow-y: auto;
+
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+
+    max-height: 30vh;
+    padding-right: 106px;
+    z-index: 220;
+    cursor: pointer;
+    }
+    table{
+        width:-webkit-fill-available ;
+    }
+
+    tr{
+        padding: 2px 8px;
+        margin:2px 3px;
+        background-color: rgb(243, 243, 243);
+        color:#000000;
+        border: 1px solid rgba(101, 101, 101, 0.3);
+        text-align: left;
+    }
+
+    .home_icon{
+        height:30px;
+        margin:auto;
+        margin-right:15px;
+        cursor: pointer;
+        /* display: none; */
+        
+    }
+    .control{
+        display: none;
+    }
 
 
-  @media (max-width: 754px){
+
+@media (max-width: 754px){
     .xcontainer{
         display: contents;
         max-width: 100%;
@@ -384,8 +432,21 @@ textarea,
         margin-inline: 0px;
         margin-left: auto;
     }
-    #movie_name{
+    .textAndButton, .allMoviesDiv{
         width:-webkit-fill-available;
         margin-right: 2px;
     }
-  }
+    .allMoviesDiv{
+        padding-right: 95px;
+    }
+    /* #back,#forw{
+        display: none;
+    } */
+    
+
+}
+/* @media (min-width: 754px){
+    #back,#forw{
+        display: block;
+    }
+} */

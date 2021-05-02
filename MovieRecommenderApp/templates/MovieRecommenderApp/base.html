@@ -34,8 +34,11 @@
   </head>
 
   <body style="color: white; font-family: Open Sans">
-  
+    
     {% block content %}{% endblock content %}
+    
+    
+
   </body>
 
 
@@ -51,10 +54,57 @@
     preload.classList.add('preload-finish');
   });
 
-  
-
-  
   </script>
+
+
+  <script>
+  
+  const allMovies=eval({{allMovies|safe}});
+  
+  $("#movie_name").each(function(){
+      $("#movie_name").keyup(function() {
+            var val = $.trim(this.value).toUpperCase();
+            //val="SUPERMAN"
+            if(val.length>2){
+              html='<table>'
+                  allMovies.forEach(function(movie,index){
+                    if(movie.toUpperCase().indexOf(val)!=-1){
+                      html+=`<tr><td class="tdclass">`+movie+"</td></tr>"
+                    }
+                  });
+                html+='</table>'
+              $('.allMoviesDiv').html(html);
+            }
+            else{
+              $('.allMoviesDiv').html("");
+            }
+       }); 
+  });
+  
+  $(document).on("click","div:not(.allMoviesDiv)",function(res){
+    if(res.target.className!="tdclass")
+    $('.allMoviesDiv').html("");
+    else
+    {
+      $('.allMoviesDiv').html("");
+      $("#movie_name")[0].value=res.target.textContent;
+      $('#submit_btn')[0].click();
+    }
+  });
+  </script>
+
+<script>
+
+function goBack() {
+  window.history.back();
+}
+
+function goForward() {
+  window.history.forward();
+}
+
+
+</script>
 
 
 
@@ -250,10 +300,14 @@
             $(".container").css({ "margin-top": "20px","margin-bottom":"auto","top":"49vh" });
             $(".container").animate({ "margin-top": "20px","margin-bottom":"auto","top":"0" },"slow");
             $(".card-group").animate({ opacity: 1 }, "slow");
+            $(".control").css({"display":"flex"})
+            $("#home").css({"display":"block"})
+            $(".allMoviesDiv").css({"padding-left": "45px"})
+            
             
             firstSearch=false;
           }
-
+ 
 
 
           $(".card").hover(
@@ -322,10 +376,6 @@
     $(document).on("submit", "#movieForm", sendMovieData);
     
     
-
-
-
-
 
 
   </script>

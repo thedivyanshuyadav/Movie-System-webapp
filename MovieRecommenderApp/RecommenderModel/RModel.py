@@ -8,17 +8,22 @@ def extractName(companies):
     company_names=[]
     for c in companies:
         company_names.append(c['name'])
+
     return ' , '.join(company_names)
 
 
-
-
+         
 class Recommender:
     def __init__(self):
-        self.__cosine_sim=np.load('./MovieRecommenderApp/RecommenderModel/input/cosine_sim.npy')
+         
+        compressed=np.load('./MovieRecommenderApp/RecommenderModel/input/cos_compressed.npz')
+    
+        self.__cosine_sim=compressed.f.arr_0
+        
         self.__titles=pd.read_csv('./MovieRecommenderApp/RecommenderModel/input/titles.csv')
         self.__titles.columns=['id','title']
         self.__titles=self.__titles.set_index('id')
+           
         self.__indices=pd.read_csv('./MovieRecommenderApp/RecommenderModel/input/indices.csv')
         self.__md=pd.read_csv('./MovieRecommenderApp/RecommenderModel/input/md.csv')
         self.__poster_df=pd.read_csv('./MovieRecommenderApp/RecommenderModel/input/MovieGenre.csv',encoding="ISO-8859-1")

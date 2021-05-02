@@ -20,7 +20,6 @@ from django.conf import settings
 from MovieRecommenderApp import views
 
 urlpatterns = [
-    # path('',views.nextPage),
     path('admin/', admin.site.urls),
     path('',include('MovieRecommenderApp.urls')),
 
