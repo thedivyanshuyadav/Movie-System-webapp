@@ -1,7 +1,6 @@
 import numpy as np
 import pandas as pd
 import urllib
-from skimage import io
 import os
 
 def extractName(companies):
