@@ -400,7 +400,13 @@ textarea,
         display: none;
     }
 
-
+    .creationDiv{
+        position: absolute;
+        margin-top:20px;
+        bottom:20px;
+        text-align: center;
+        width: 100vw;
+    }
 
 @media (max-width: 754px){
     .xcontainer{

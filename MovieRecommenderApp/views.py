@@ -10,11 +10,12 @@ import pandas as pd
 from django.http import JsonResponse
 
 
-rec=Recommender()  
 
 @never_cache
 def index(request):
     global rec 
+    rec=Recommender()  
+    
     allMovies =rec._Recommender__titles.title.tolist()
     return render(request,'MovieRecommenderApp/index.html',context={"allMovies":json.dumps(allMovies)})
  
@@ -44,5 +45,5 @@ def movieInput(request):
             content_type="application/json"
         )
         
- 
+
 
