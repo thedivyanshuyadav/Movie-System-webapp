@@ -13,7 +13,7 @@ body{
 
 body::after {
     content: "";
-    background: url(/static/images/background.jpg) repeat;
+    background: url(/MovieRecommenderApp/static/images/background.jpg) repeat;
     filter: brightness(0.5) blur(1px);
     top: 0;
     left: 0;
