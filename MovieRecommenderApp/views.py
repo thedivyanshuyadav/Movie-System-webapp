@@ -25,6 +25,7 @@ def index(request):
 @never_cache  
 def movieInput(request):
     global rec
+    
     if(request.method=="POST"):
         input_movie=request.POST['movie_name']
         if(input_movie=="NO RECORD"):
@@ -33,7 +34,6 @@ def movieInput(request):
             return JsonResponse({'status':'ok'})
         
         relDf=pd.DataFrame(rec.getRelatedMovies(input_movie)).T
-        # RelatedMovies,PosterLink=rec.getRelatedMovies(input_movie)
         relDf=relDf.replace(np.nan,"")
         RelatedMovies,PosterLink=relDf.iloc[:,0].to_list(),relDf.iloc[:,1].to_list()
         
