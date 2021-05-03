@@ -3,8 +3,16 @@
 <html>
   <head>
     <title>Movie Recommendation System</title>
-    
-    <link rel="icon"href="{% static 'favicon.ico' %}" >
+    {% comment %}
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    {% endcomment %}
+
+    <link rel="icon" href="{% static 'favicon.ico' %}" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
     <link
@@ -34,350 +42,343 @@
   </head>
 
   <body style="color: white; font-family: Open Sans">
-    
     {% block content %}{% endblock content %}
-    
-    
-
   </body>
 
-
-
-
-
-  
   <script type="text/javascript" src="{% static 'js/jquery-min.js' %}"></script>
-  <script type='text/javascript'>
-  
-  window.addEventListener('load',()=>{
-    const preload=document.querySelector('.preload');
-    preload.classList.add('preload-finish');
-  });
-
+  <script type="text/javascript">
+    window.addEventListener("load", () => {
+      const preload = document.querySelector(".preload");
+      preload.classList.add("preload-finish");
+    });
   </script>
-
 
   <script>
-  
-  const allMovies=eval({{allMovies|safe}});
-  
-  $("#movie_name").each(function(){
-      $("#movie_name").keyup(function() {
-            var val = $.trim(this.value).toUpperCase();
-            //val="SUPERMAN"
-            if(val.length>2){
-              html='<table>'
-                  allMovies.forEach(function(movie,index){
-                    if(movie.toUpperCase().indexOf(val)!=-1){
-                      html+=`<tr><td class="tdclass">`+movie+"</td></tr>"
-                    }
-                  });
-                html+='</table>'
-              $('.allMoviesDiv').html(html);
-            }
-            else{
-              $('.allMoviesDiv').html("");
-            }
-       }); 
-  });
-  
-  $(document).on("click","div:not(.allMoviesDiv)",function(res){
-    if(res.target.className!="tdclass")
-    $('.allMoviesDiv').html("");
-    else
-    {
+
+    const allMovies=eval({{allMovies|safe}});
+
+    $("#movie_name").each(function(){
+        $("#movie_name").keyup(function() {
+              var val = $.trim(this.value).toUpperCase();
+              //val="SUPERMAN"
+              if(val.length>2){
+                html='<table>'
+                    allMovies.forEach(function(movie,index){
+                      if(movie.toUpperCase().indexOf(val)!=-1){
+                        html+=`<tr><td class="tdclass">`+movie+"</td></tr>"
+                      }
+                    });
+                  html+='</table>'
+                $('.allMoviesDiv').html(html);
+              }
+              else{
+                $('.allMoviesDiv').html("");
+              }
+         });
+    });
+
+    $(document).on("click","div:not(.allMoviesDiv)",function(res){
+      if(res.target.className!="tdclass")
       $('.allMoviesDiv').html("");
-      $("#movie_name")[0].value=res.target.textContent;
-      $('#submit_btn')[0].click();
+      else
+      {
+        $('.allMoviesDiv').html("");
+        $("#movie_name")[0].value=res.target.textContent;
+        $('#submit_btn')[0].click();
+      }
+    });
+  </script>
+
+  <script>
+    function goBack() {
+      window.history.back();
     }
-  });
+
+    function goForward() {
+      window.history.forward();
+    }
   </script>
 
-<script>
-
-function goBack() {
-  window.history.back();
-}
-
-function goForward() {
-  window.history.forward();
-}
-
-
-</script>
-
-
-
   <script type="text/javascript">
-  var firstSearch=true;
-
+    var firstSearch = true;
   </script>
-  
+
   <script type="text/javascript">
-
-
     function sendMovieData(e) {
       document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0; 
-      e.preventDefault();
-      $.ajax({
-        type: "POST",
-        url: "/movie/input/",
-        
-        data: {
-          movie_name: $("#movie_name").val(),
-          csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
-        },
-        success: function (response) {
-            $("#row_1").html("")
-            
-          var i = 1;
-          main_movie_name=$("#movie_name").val()
-        
-          main_movie_info=response[main_movie_name]
-          
-          main_movie_dict=JSON.parse(main_movie_info)
-          main_movie_link_extra=main_movie_dict['mainMoviePoster']
-          /*
-          
-          adult
-          budget
-          genres
-          overview----summary
+      document.documentElement.scrollTop = 0;
 
-          production_companies
-          release_date
-          revenue
-          spoken_languages --- key=name
-          tagline
-          vote_average
-          vote_count
-          
-          */
-          main_movie_adult=main_movie_dict['adult']
-          main_movie_budget=main_movie_dict['budget']
-          main_movie_genres=main_movie_dict['genres']
-          main_movie_overview=main_movie_dict['overview']
-          main_movie_production_companies=main_movie_dict['production_companies']
-          main_movie_release_date=main_movie_dict['release_date']
-          main_movie_spoken_languages=main_movie_dict['spoken_languages']
-          main_movie_tagline=main_movie_dict['tagline']
-          main_movie_vote_average=main_movie_dict['vote_average']
-          main_movie_vote_count=main_movie_dict['vote_count']
-          main_movie_link=main_movie_dict['mainMoviePoster']
-          
-
-
-
-          delete response[$("#movie_name").val()]
-          
-
-          main_movie_html=` 
-                          <div class="movieInfoClass">
-                              <div class="card" id="card_main" style="background-image: url(${main_movie_link}) ,url('/MovieRecommenderApp/static/images/no-bg.jpg');background-size:100% 100%;">
-                                    <div class="card-body" id="card_body_main">
-                                        <p class="card-text">
-                                        
-                                        </p>
-                                    </div>
-                                  </div>
-                              <div class="xcontainer">
-                              <div class="row">
-                                <div class="col" style="column-span: all;text-align:center;">
-                                  <h2 style="text-transform: uppercase;margin-left:auto;margin-right:auto;margin-bottom:0px"><b>${main_movie_name}</b></h2>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mc" style="column-span: all;text-align:center;">
-                                <h6>"<b>${main_movie_tagline}</b>"</h6>
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mc" style="column-span: all;">
-                                
-                                </div>
-                                
-                              </div>
-                              <div class="row">
-                                <div class="col mc">
-                                Adult Rated : ${main_movie_adult}
-                                </div>
-                                <div class="col mc">
-                                Budget : ${main_movie_budget}
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mc">
-                                Genres : ${main_movie_genres}
-                                </div>
-                                <div class="col mc">
-                                Production Companies : ${main_movie_production_companies}
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mc">
-                                Release Date : ${main_movie_release_date}
-                                </div>
-                                <div class="col mc">
-                                Average Vote : ${main_movie_vote_average}
-                                </div>
-                              </div>
-                              <div class="row">
-                                <div class="col mc">
-                                Language : ${main_movie_spoken_languages}
-                                </div>
-                                <div class="col mc">
-                                Total Votes : ${main_movie_vote_count}
-                                </div>
-                                
-                              </div>
-                              <div class="row">
-                                <div class="col mc" style="column-span: all;">
-                                <b>Summary : ${main_movie_overview}</b>
-                                </div>
-                                
-                              </div>
-                              
-
-
-
-                            </div>
-                            
-                          </div>
-                            
-                            
-                            `
-
-          $('.mainMovieClass').html(main_movie_html)
-
-
-
-
-
-
-
-
-
-
-
-          var prev=1;
-          for (var key in response) {
-            var movie_name = key;
-            var movie_link = response[key];
-            
-
-            card_html = `
-                            <div class="col">
-                            <div class="card" id="card_${i}" style="background-image:url(${movie_link}),url('/MovieRecommenderApp/static/images/no-bg.jpg');background-size:100% 100%;">
-                            {% comment %} <img class="card-img-top" alt="..." id="card_img_${movie_name}" /> {% endcomment %}
-                                <div class="card-body" id="card_body${i}">
-                                    <p class="card-text">
-                                    
-                                    </p>
-                                </div>
-                                <div class="cardblur" id="cardblur_${i}">${movie_name}</div>
-                                
-                                
-                                </div>
-                            </div>`;
-            
-            $(`#row_${prev}`).append(card_html);
-            i += 1;
-          }
-
-          mainTitle=document.getElementById("mainTitle");
-          mainMovieContainer=document.getElementsByClassName("mainMovieContainer")[0]
-          
-          setTimeout(function(){
-            mainTitle.classList.add('visuallyhidden');
-            mainMovieContainer.classList.remove('visuallyhidden');
-            mainMovieContainer.classList.add('visuallyunhide');
-          },25)
-
-          
-          $("#movieInput").html($("#movie_name").val());
-          if(firstSearch){
-            $(".container").css({ "margin-top": "20px","margin-bottom":"auto","top":"49vh" });
-            $(".container").animate({ "margin-top": "20px","margin-bottom":"auto","top":"0" },"slow");
-            $(".card-group").animate({ opacity: 1 }, "slow");
-            $(".control").css({"display":"flex"})
-            $("#home").css({"display":"block"})
-            $(".allMoviesDiv").css({"padding-left": "45px"})
-            
-            
-            firstSearch=false;
-          }
- 
-
-
-          $(".card").hover(
-            function () {
-
-
-              $('#card_'+this.id.slice(5)).css({
-                  'box-shadow': '0 100px 100px rgba(62, 84, 58, 0.065) inset, 0 0 30px rgba(0, 250, 212, 0.8)',
-              });
-              $("#cardblur_" + this.id.slice(5)).css({
-                opacity: 1,
-              });
-            },
-            function () {
-
-                $('#card_'+this.id.slice(5)).css({
-                  'box-shadow': '0 100px 100px rgba(62, 84, 58, 0.065) inset, 0 0 20px rgba(195, 196, 196, 0.8)',
-              });
-
-
-              $("#" + "cardblur_" + this.id.slice(5)).css({
-                opacity: 0,
-              });
-            }
-          );
-
-
-
-
-          
-              $('.cardblur').on('click',function(){
-                
-                $("#movie_name")[0].value=this.innerText;
-                $('#submit_btn').click();
-                
-              });
-
-
-            $('.card').on('click',function(){
-                const movieprocessbar=document.querySelector('.movieprocessbar');
-                $('.movieprocessbar').css({opacity:1})
-                movieprocessbar.classList.add('animateProgress');
-                setTimeout(()=>{
-                $('.movieprocessbar').css({opacity:0})
-                movieprocessbar.classList.remove('animateProgress');
-                  
-                },2000)
-              });
-
-
-        },
-
-        error:function(err,textStatus,errmsg){
-            console.log('error ------------')
-            console.log(err.status)
-            console.log(textStatus)
-            console.log(errmsg)
-        },
-
-
+      movie_input = $("#movie_name").val();
+      var matched=false;
+      allMovies.every(function (movie, index) {
+        if (movie.toUpperCase() == $.trim(movie_input).toUpperCase()) {
+          movie_input = movie;
+          matched=true;
+          return false;
+        } else return true;
       });
 
+
+      if(matched){
+            e.preventDefault();
+            $.ajax({
+              type: "POST",
+              url: "/movie/input/",
+
+              data: {
+                movie_name: movie_input,
+                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+              },
+              success: function (response) {
+
+                  console.log(response)
+
+                  $("#row_1").html("");
+
+                  var i = 1;
+                  main_movie_name = movie_input;
+
+                  main_movie_info = response[main_movie_name];
+
+                  main_movie_dict = JSON.parse(main_movie_info);
+                  main_movie_link_extra = main_movie_dict["mainMoviePoster"];
+                  /*
+
+                    adult
+                    budget
+                    genres
+                    overview----summary
+
+                    production_companies
+                    release_date
+                    revenue
+                    spoken_languages --- key=name
+                    tagline
+                    vote_average
+                    vote_count
+
+                    */
+                  main_movie_adult = main_movie_dict["adult"];
+                  main_movie_budget = main_movie_dict["budget"];
+                  main_movie_genres = main_movie_dict["genres"];
+                  main_movie_overview = main_movie_dict["overview"];
+                  main_movie_production_companies =
+                    main_movie_dict["production_companies"];
+                  main_movie_release_date = main_movie_dict["release_date"];
+                  main_movie_spoken_languages = main_movie_dict["spoken_languages"];
+                  main_movie_tagline = main_movie_dict["tagline"];
+                  main_movie_vote_average = main_movie_dict["vote_average"];
+                  main_movie_vote_count = main_movie_dict["vote_count"];
+                  main_movie_link = main_movie_dict["mainMoviePoster"];
+
+                  delete response[movie_input];
+
+                  main_movie_html = `
+                                    <div class="movieInfoClass">
+                                        <div class="card" id="card_main" style="background-image: url(${main_movie_link}) ,url('/MovieRecommenderApp/static/images/no-bg.jpg');background-size:100% 100%;">
+                                              <div class="card-body" id="card_body_main">
+                                                  <p class="card-text">
+
+                                                  </p>
+                                              </div>
+                                            </div>
+                                        <div class="xcontainer">
+                                        <div class="row">
+                                          <div class="col" style="column-span: all;text-align:center;">
+                                            <h2 style="text-transform: uppercase;margin-left:auto;margin-right:auto;margin-bottom:0px"><b>${main_movie_name}</b></h2>
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc" style="column-span: all;text-align:center;">
+                                          <h6>"<b>${main_movie_tagline}</b>"</h6>
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc" style="column-span: all;">
+
+                                          </div>
+
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc">
+                                          Adult Rated : ${main_movie_adult}
+                                          </div>
+                                          <div class="col mc">
+                                          Budget : ${main_movie_budget}
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc">
+                                          Genres : ${main_movie_genres}
+                                          </div>
+                                          <div class="col mc">
+                                          Production Companies : ${main_movie_production_companies}
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc">
+                                          Release Date : ${main_movie_release_date}
+                                          </div>
+                                          <div class="col mc">
+                                          Average Vote : ${main_movie_vote_average}
+                                          </div>
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc">
+                                          Language : ${main_movie_spoken_languages}
+                                          </div>
+                                          <div class="col mc">
+                                          Total Votes : ${main_movie_vote_count}
+                                          </div>
+
+                                        </div>
+                                        <div class="row">
+                                          <div class="col mc" style="column-span: all;">
+                                          <b>Summary : ${main_movie_overview}</b>
+                                          </div>
+
+                                        </div>
+
+                                      </div>
+
+                                    </div>
+
+
+                                      `;
+
+                  $(".mainMovieClass").html(main_movie_html);
+
+                  var prev = 1;
+                  for (var key in response) {
+                    var movie_name = key;
+                    var movie_link = response[key];
+
+                    card_html = `
+                                      <div class="col">
+                                      <div class="card" id="card_${i}" style="background-image:url(${movie_link}),url('/MovieRecommenderApp/static/images/no-bg.jpg');background-size:100% 100%;">
+                                      {% comment %} <img class="card-img-top" alt="..." id="card_img_${movie_name}" /> {% endcomment %}
+                                          <div class="card-body" id="card_body${i}">
+                                              <p class="card-text">
+
+                                              </p>
+                                          </div>
+                                          <div class="cardblur" id="cardblur_${i}">${movie_name}</div>
+
+
+                                          </div>
+                                      </div>`;
+
+                    $(`#row_${prev}`).append(card_html);
+                    i += 1;
+                  }
+
+                  mainTitle = document.getElementById("mainTitle");
+                  mainMovieContainer = document.getElementsByClassName(
+                    "mainMovieContainer"
+                  )[0];
+
+                  setTimeout(function () {
+                    mainTitle.classList.add("visuallyhidden");
+                    mainMovieContainer.classList.remove("visuallyhidden");
+                    mainMovieContainer.classList.add("visuallyunhide");
+                  }, 25);
+
+                  $("#movieInput").html(movie_input);
+                  $(".allMoviesDiv").html("");
+                  if (firstSearch) {
+                    $(".container").css({
+                      "margin-top": "20px",
+                      "margin-bottom": "auto",
+                      top: "49vh",
+                    });
+                    $(".container").animate(
+                      { "margin-top": "20px", "margin-bottom": "auto", top: "0" },
+                      "slow"
+                    );
+                    $(".card-group").animate({ opacity: 1 }, "slow");
+                    $(".control").css({ display: "flex" });
+                    $("#home").css({ display: "block" });
+                    $(".allMoviesDiv").css({ "padding-left": "45px" });
+
+                    firstSearch = false;
+                  }
+
+                  $(".card").hover(
+                    function () {
+                      $("#card_" + this.id.slice(5)).css({
+                        "box-shadow":
+                          "0 100px 100px rgba(62, 84, 58, 0.065) inset, 0 0 30px rgba(0, 250, 212, 0.8)",
+                      });
+                      $("#cardblur_" + this.id.slice(5)).css({
+                        opacity: 1,
+                      });
+                    },
+                    function () {
+                      $("#card_" + this.id.slice(5)).css({
+                        "box-shadow":
+                          "0 100px 100px rgba(62, 84, 58, 0.065) inset, 0 0 20px rgba(195, 196, 196, 0.8)",
+                      });
+
+                      $("#" + "cardblur_" + this.id.slice(5)).css({
+                        opacity: 0,
+                      });
+                    }
+                  );
+
+                  $(".cardblur").on("click", function () {
+                    $("#movie_name")[0].value = this.innerText;
+                    $("#submit_btn").click();
+                  });
+
+                  $(".card").on("click", function () {
+                    const movieprocessbar = document.querySelector(
+                      ".movieprocessbar"
+                    );
+                    $(".movieprocessbar").css({ opacity: 1 });
+                    movieprocessbar.classList.add("animateProgress");
+                    setTimeout(() => {
+                      $(".movieprocessbar").css({ opacity: 0 });
+                      movieprocessbar.classList.remove("animateProgress");
+                    }, 2000);
+                  });
+              },
+
+              error: function (err, textStatus, errmsg) {
+                console.log(err)
+                console.log(err.status);
+                console.log(textStatus);
+                console.log(errmsg);
+              },
+            });
+      } else {
+        
+          e.preventDefault();
+          $.ajax({
+            type:"POST",
+            url: "/movie/input/",
+
+            data: {
+              movie_name: "NO RECORD",
+              csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
+            },
+          })
+          $('#movie_name').css({
+              background:"rgba(250,30,0,0.75)",
+              border:"2px solid whitesmoke",
+              color:"whitesmoke",
+          })
+          setTimeout(function(){
+          $('#movie_name').css({
+              background:"#fff",
+              border:"1px solid #ced4da",
+              color:"#212529",
+          })
+          },7);
+          
+
+      }
     }
 
-
     $(document).on("submit", "#movieForm", sendMovieData);
-    
-    
-
-
   </script>
-
 </html>
