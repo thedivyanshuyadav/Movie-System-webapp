@@ -19,7 +19,7 @@ def index(request):
     allMovies =rec._Recommender__titles.title.tolist()
     return render(request,'MovieRecommenderApp/index.html',context={"allMovies":json.dumps(allMovies)})
  
-               
+                
 # Create your views here.
 
 @never_cache  

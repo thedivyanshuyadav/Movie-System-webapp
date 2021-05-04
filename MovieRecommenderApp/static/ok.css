@@ -399,13 +399,26 @@ textarea,
     .control{
         display: none;
     }
+    .mainMovieDiv{
+        column-span: all;
+        text-align:center;
+    }
 
-    .creationDiv{
-        position: absolute;
-        margin-top:20px;
-        bottom:20px;
-        text-align: center;
-        width: 100vw;
+    @media (max-width: 540px){
+        .row{
+            display: block;
+            line-height: normal;
+            padding:2px;
+        }
+        .col{
+            padding:6px;
+            margin-top:4px;
+            margin-bottom:4px;
+            
+        }
+        .mainMovieDiv{
+            margin-top: 25px;
+        }
     }
 
 @media (max-width: 754px){
