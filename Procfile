@@ -1,1 +1,1 @@
-web: sh run.sh
+web: gunicorn Movie_Recommendation_System.wsgi
