@@ -4,7 +4,8 @@ Live on https://movie-system-webapp.herokuapp.com/
 
 A Movie system webapp with Recommendation System. It shows movie information as well as related movies as a recommendation.
 
-Datasets : https://github.com/thedivyanshuyadav/The-Movie-Dataset/tree/main
+Cosine-Similarity & Datasets : https://github.com/thedivyanshuyadav/The-Movie-Dataset/tree/main
+
 
 
 ## Steps to run locally
